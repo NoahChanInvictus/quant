@@ -1,12 +1,13 @@
 # -*- coding:utf-8 -*-
 
-SQL_HOST = '219.224.134.213'
+SQL_HOST = 'localhost'
 SQL_USER = 'root'
 SQL_PASSWD = ''
 SQL_DB = 'quant_test'
 SQL_CHARSET = 'utf8'
 
 PARAMETER_TABLE = 'parameter_test'
+SETTINGS_TABLE = 'settings_test'
 STOCK_TABLE = 'stock_test'
 SIGNAL_TABLE = 'signal_test'
 ACCOUNT_TABLE = 'account_test'
