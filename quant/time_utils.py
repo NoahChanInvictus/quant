@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
-
+from datetime import date, datetime, timedelta
 import time
 
 def today():
     return time.strftime('%Y-%m-%d', time.localtime(time.time()))
 
+def yesterday():
+    return datetime2datestr(datetime.now() - timedelta(days = 1))
+
 def now():
     return time.strftime('%H:%M:%S', time.localtime(time.time()))
 
-def datetime2datest(date):
+def datetime2datestr(date):
     return date.strftime('%Y-%m-%d')
 
 def unix2hadoop_date(ts):

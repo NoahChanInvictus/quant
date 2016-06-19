@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
-
 import sys
 sys.path.append('../')
+import json
 from time_utils import today
 from global_utils import default_db
 from global_config import PARAMETER_TABLE, SETTINGS_TABLE
@@ -63,7 +63,7 @@ def settings_search():
     today_date = today()
     conn = default_db()
     cur = conn.cursor()
-    order = 'select id, middle_on, strict_flag, static_closing, date from ' + SETTINGS_TABLE 
+    order = 'select id, middle_on, strict_flag, static_closing, stocks, date from ' + SETTINGS_TABLE 
     cur.execute(order)
     data = cur.fetchall()
     print data
@@ -74,9 +74,9 @@ def settings_modify(modify_dict):
     today_date = today()
     conn = default_db()
     cur = conn.cursor()
-    order = 'select middle_on, strict_flag, static_closing from ' + SETTINGS_TABLE + ' order by id desc' 
+    order = 'select middle_on, strict_flag, static_closing, stocks from ' + SETTINGS_TABLE + ' order by id desc' 
     cur.execute(order)
-    middle_on, strict_flag, static_closing = cur.fetchone()
+    middle_on, strict_flag, static_closing, stocks = cur.fetchone()
 
     if 'middle_on' in modify_dict:
         middle_on = modify_dict['middle_on']
@@ -84,9 +84,11 @@ def settings_modify(modify_dict):
         strict_flag = modify_dict['strict_flag']
     if 'static_closing' in modify_dict:
         static_closing = modify_dict['static_closing']
+    if 'stocks' in modify_dict:
+        stocks = modify_dict['stocks']
 
-    order = 'insert into ' + SETTINGS_TABLE + '(middle_on, strict_flag, static_closing, date) ' \
-            + 'values(%d, %d, %d, "%s")' % (middle_on, strict_flag, static_closing, today_date)
+    order = 'insert into ' + SETTINGS_TABLE + '(middle_on, strict_flag, static_closing, stocks, date) ' \
+            + 'values(%d, %d, %d, "%s", "%s")' % (middle_on, strict_flag, static_closing, stocks, today_date)
     cur.execute(order)
     conn.commit()
     cur.close()
@@ -98,6 +100,11 @@ if __name__ == '__main__':
     #nct_create('test', 0, 1, 1, 1)
     #nct_update([26], [])
     #nct_delete([26])
-    #modify_dict = {'strict_flag': 1}
+    #settings_search()
+    modify_dict = {'strict_flag': 1}
+    stock_nos = ['00011.SZ','00012.SZ','00016.SZ','00017.SZ','00018.SZ','00019.SZ','00020.SZ','00022.SZ','00025.SZ','00026.SZ',\
+                 '00028.SZ','00029.SZ','00030.SZ','00037.SZ','00045.SZ','00055.SZ','00056.SZ','00058.SZ','00413.SZ','00418.SZ',\
+                 '00429.SZ','00488.SZ','00505.SZ','00521.SZ','00530.SZ','00539.SZ','00541.SZ','00550.SZ','00553.SZ','00570.SZ',\
+                 '00581.SZ','00596.SZ','00613.SZ','00625.SZ','00725.SZ','00726.SZ','00761.SZ','00869.SZ']
+    modify_dict['stocks'] = ','.join(stock_nos)
     #settings_modify(modify_dict)
-    settings_search()
